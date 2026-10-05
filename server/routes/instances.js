@@ -30,6 +30,7 @@ import {
 import { WS_EVENTS, NETWORK_POLICIES, INSTANCE_EVENTS } from '../../shared/constants.js';
 import { getCurrentImageVersion } from '../workspace-image.js';
 import { getAllScanSummaries } from '../security-scan.js';
+import { getGitGuardSummary } from '../gitguard.js';
 import { createGrantsForInstance } from '../grants.js';
 import { isAvailable as litellmAvailable, createVirtualKey, deleteVirtualKey } from '../litellm.js';
 import { writeContainerACL, removeContainerACL, syncAllACLs } from '../proxy.js';
@@ -414,6 +415,8 @@ function mergeInstances(dockerContainers, dbInstances) {
         lastEvent: usageRow.last_event,
         updatedAt: usageRow.updated_at,
       } : null,
+      // GitGuard badge: last polled summary (server/gitguard.js); null = feature off
+      gitguard: getGitGuardSummary(container.id, container.state),
       scan: (() => {
         const s = scanMap.get(container.id);
         return s ? {

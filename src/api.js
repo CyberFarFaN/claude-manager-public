@@ -112,6 +112,44 @@ export function rebuildWorkspaceImage() {
   return request('/api/workspace-image/rebuild', { method: 'POST' });
 }
 
+// --- GitGuard (pre-commit gate inside each instance) ---
+
+export function fetchGitGuard(id) {
+  return request(`/api/instances/${encodeURIComponent(id)}/gitguard`);
+}
+
+export function generateGitGuardReport(id, name) {
+  return request(`/api/instances/${encodeURIComponent(id)}/gitguard/report`, {
+    method: 'POST',
+    body: JSON.stringify({ name }),
+  });
+}
+
+/**
+ * Download a generated report. The HTML was produced inside a container, so it
+ * is fetched as an opaque blob and saved — never opened in this origin.
+ */
+export async function downloadGitGuardReport(id, token, filename) {
+  const res = await fetch(`/api/instances/${encodeURIComponent(id)}/gitguard/report/${encodeURIComponent(token)}`, { credentials: 'include' });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || `Download failed: ${res.status}`);
+  }
+  const blob = new Blob([await res.arrayBuffer()], { type: 'application/octet-stream' });
+  const url = URL.createObjectURL(blob);
+  try {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename || 'gitguard-report.html';
+    a.rel = 'noopener';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  } finally {
+    setTimeout(() => URL.revokeObjectURL(url), 10_000);
+  }
+}
+
 // --- Security scans ---
 
 export function fetchSecurityScan() {

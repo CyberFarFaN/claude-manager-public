@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useInstances } from '../hooks/useInstances.js';
 import { fetchSystemInfo, discoverContainers, adoptContainer, uploadFile, fetchWorkspaceImage, rebuildWorkspaceImage, fetchSecurityScan, runSecurityScan } from '../api.js';
 import SecurityScanModal from './SecurityScanModal.jsx';
+import GitGuardPanel from './GitGuardPanel.jsx';
 import InstanceCard from './InstanceCard.jsx';
 import InstanceRow from './InstanceRow.jsx';
 import NewInstanceModal from './NewInstanceModal.jsx';
@@ -54,6 +55,7 @@ export default function Dashboard({ isAdmin, deviceId }) {
   const [imageStatus, setImageStatus] = useState(null);
   const [scanStatus, setScanStatus] = useState(null);
   const [scanModalInstance, setScanModalInstance] = useState(null);
+  const [gitguardInstance, setGitGuardInstance] = useState(null);
 
   // Scan WS events: update status; alert ONLY on new CRITICAL (per preference)
   const handleScanEvent = useCallback((evt) => {
@@ -494,6 +496,7 @@ export default function Dashboard({ isAdmin, deviceId }) {
                     onPolicyClick={setPolicyPreview}
                     onGrantClick={setGrantInstanceId}
                     onScanClick={setScanModalInstance}
+                    onGitGuardClick={setGitGuardInstance}
                   />
                 ))}
               </div>
@@ -516,6 +519,7 @@ export default function Dashboard({ isAdmin, deviceId }) {
                     onPolicyClick={setPolicyPreview}
                     onGrantClick={setGrantInstanceId}
                     onScanClick={setScanModalInstance}
+                    onGitGuardClick={setGitGuardInstance}
                   />
                 ))}
               </div>
@@ -580,6 +584,16 @@ export default function Dashboard({ isAdmin, deviceId }) {
           instanceId={scanModalInstance.id}
           instanceName={scanModalInstance.name}
           onClose={() => setScanModalInstance(null)}
+        />
+      )}
+
+      {/* GitGuard status / blocked commits / report */}
+      {gitguardInstance && (
+        <GitGuardPanel
+          instance={gitguardInstance}
+          isAdmin={isAdmin}
+          showToast={showToast}
+          onClose={() => setGitGuardInstance(null)}
         />
       )}
 

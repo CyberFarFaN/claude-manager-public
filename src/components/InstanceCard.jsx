@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import StatusBadge from './StatusBadge.jsx';
 import GrantBadge from './GrantBadge.jsx';
+import GitGuardBadge from './GitGuardBadge.jsx';
 import { formatTokens } from '../lib/notify.js';
 
 function timeAgo(unixTimestamp) {
@@ -20,7 +21,7 @@ const borderColors = {
   dead: 'border-l-red-700',
 };
 
-export default function InstanceCard({ instance, managed = true, onStart, onStop, onTerminal, onRemove, onRecreate, onUpdateClaude, onAdopt, adopting, onPolicyClick, onGrantClick, onScanClick }) {
+export default function InstanceCard({ instance, managed = true, onStart, onStop, onTerminal, onRemove, onRecreate, onUpdateClaude, onAdopt, adopting, onPolicyClick, onGrantClick, onScanClick, onGitGuardClick }) {
   const [stopping, setStopping] = useState(false);
   const [removing, setRemoving] = useState(false);
   const [recreating, setRecreating] = useState(false);
@@ -100,6 +101,7 @@ export default function InstanceCard({ instance, managed = true, onStart, onStop
                   onClick={() => onGrantClick?.(instance.id)}
                 />
               ))}
+              <GitGuardBadge gitguard={instance.gitguard} onClick={() => onGitGuardClick?.(instance)} />
             </>
           )}
           {!managed && (

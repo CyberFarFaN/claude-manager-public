@@ -12,6 +12,9 @@ export const config = Object.freeze({
   IMAGE_UPDATE_INTERVAL_HOURS: parseInt(process.env.IMAGE_UPDATE_INTERVAL_HOURS || '24', 10),
   // Trivy security scans of each instance's /workspace (hours, 0 = off)
   SECURITY_SCAN_INTERVAL_HOURS: parseInt(process.env.SECURITY_SCAN_INTERVAL_HOURS || '24', 10),
+  // GitGuard indicator: how often to run `gitguard status --json` in each running
+  // instance (docker exec). 0 disables the badge, the panel and the polling.
+  GITGUARD_POLL_INTERVAL_SECONDS: parseInt(process.env.GITGUARD_POLL_INTERVAL_SECONDS || '120', 10),
   // Restricted policy the post-image-update connectivity smoke test runs against
   // (runs `claude` through squid to confirm Anthropic is reachable after a Claude
   // Code upgrade). Must be a restricted claude-* policy.
