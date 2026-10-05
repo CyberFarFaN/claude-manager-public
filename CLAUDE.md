@@ -12,6 +12,7 @@ Includes the workspace Docker image source in workspace/.
 - src/lib/notify.js — desktop/toast/audio notifications + token formatting
 - workspace/Dockerfile — the Claude Code workspace image
 - workspace/scripts/cm-notify + workspace/config/managed-settings.json — Stop/Notification hook that reports lifecycle events + token usage to the manager
+- server/gitguard.js + server/routes/gitguard.js — GitGuard indicator: pulls `gitguard status|events|report --json` over docker exec, sanitises everything (container output is untrusted), report served as a forced download only
 - server/workspace-image.js — rebuilds claude-workspace over the Docker API to track latest Claude Code (daily check + manual). Needs ./workspace mounted as /workspace-src (WORKSPACE_SRC_DIR).
 
 ## Data architecture

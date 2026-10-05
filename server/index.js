@@ -22,6 +22,7 @@ import policyRoutes from './routes/policies.js';
 import accessRequestRoutes from './routes/access-requests.js';
 import workspaceImageRoutes from './routes/workspace-image.js';
 import securityScanRoutes from './routes/security-scan.js';
+import gitguardRoutes from './routes/gitguard.js';
 import connectivityCheckRoutes from './routes/connectivity-check.js';
 import { checkExpiredGrants } from './grants.js';
 import { syncAllACLs } from './proxy.js';
@@ -32,6 +33,7 @@ import { setLogger } from './logger.js';
 import { startHealthMonitor, stopHealthMonitor } from './health.js';
 import { startProxyLogWatcher, stopProxyLogWatcher } from './proxy-log.js';
 import { startIdleStop, stopIdleStop } from './idle-stop.js';
+import { startGitGuardPoller, stopGitGuardPoller } from './gitguard.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -112,6 +114,7 @@ async function start() {
   await fastify.register(accessRequestRoutes);
   await fastify.register(workspaceImageRoutes);
   await fastify.register(securityScanRoutes);
+  await fastify.register(gitguardRoutes);
   await fastify.register(connectivityCheckRoutes);
 
   // Let the workspace-image, scan and connectivity modules push status over the dashboard WS channel
@@ -154,6 +157,7 @@ async function start() {
     stopHealthMonitor();
     stopProxyLogWatcher();
     stopIdleStop();
+    stopGitGuardPoller();
     closeDb();
   });
 
@@ -202,6 +206,7 @@ async function start() {
   startHealthMonitor();
   startProxyLogWatcher();
   startIdleStop();
+  startGitGuardPoller(broadcast);
 
   fastify.log.debug(`Registered routes:\n${fastify.printRoutes({ commonPrefix: false })}`);
 

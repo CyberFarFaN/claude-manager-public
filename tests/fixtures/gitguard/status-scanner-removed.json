@@ -1,0 +1,137 @@
+{
+  "schema": "gitguard.status/v1",
+  "generated_at": "2026-10-05T22:34:45.979Z",
+  "host": "gitguard-linux",
+  "user": "claude",
+  "healthy": false,
+  "gitguard": {
+    "version": "0.6.0",
+    "released_at": "2026-06-02",
+    "install_root": "/opt/gitguard",
+    "installed": {
+      "version": "0.6.0",
+      "commit": "85162fd9e9505a6a7328d0545cd01ffe9a4bc4c0",
+      "installed_at": "10/05/2026 22:27:08"
+    }
+  },
+  "policy": {
+    "present": true,
+    "enforced": true,
+    "path": "/opt/gitguard/policy.json",
+    "error": "",
+    "allow_interactive": false,
+    "honor_ignore_list": false,
+    "required_scanners": [
+      "gitleaks",
+      "trufflehog",
+      "psscriptanalyzer",
+      "semgrep",
+      "zizmor"
+    ]
+  },
+  "hooks": {
+    "expected_path": "/opt/gitguard/hooks",
+    "effective_path": "/opt/gitguard/hooks",
+    "effective_scope": "system",
+    "effective_origin": "file:/etc/gitconfig",
+    "owned_by_gitguard": true,
+    "hook_files_present": true,
+    "entries": [
+      {
+        "scope": "system",
+        "origin": "file:/etc/gitconfig",
+        "value": "/opt/gitguard/hooks"
+      }
+    ]
+  },
+  "scanners": [
+    {
+      "name": "gitleaks",
+      "display": "Gitleaks",
+      "purpose": "Secret detection",
+      "wired": true,
+      "required": true,
+      "present": true,
+      "version": "8.30.1",
+      "path": "/opt/gitguard-tools/bin/gitleaks",
+      "error": ""
+    },
+    {
+      "name": "trufflehog",
+      "display": "TruffleHog",
+      "purpose": "Verified secrets",
+      "wired": true,
+      "required": true,
+      "present": true,
+      "version": "3.97.9",
+      "path": "/opt/gitguard-tools/bin/trufflehog",
+      "error": ""
+    },
+    {
+      "name": "semgrep",
+      "display": "Semgrep",
+      "purpose": "SAST / OWASP",
+      "wired": true,
+      "required": true,
+      "present": false,
+      "version": "",
+      "path": "",
+      "error": ""
+    },
+    {
+      "name": "psscriptanalyzer",
+      "display": "PSScriptAnalyzer",
+      "purpose": "PowerShell lint",
+      "wired": true,
+      "required": true,
+      "present": true,
+      "version": "1.25.0",
+      "path": "/usr/local/share/powershell/Modules/PSScriptAnalyzer/1.25.0",
+      "error": ""
+    },
+    {
+      "name": "pre-commit",
+      "display": "pre-commit",
+      "purpose": "Hook framework",
+      "wired": false,
+      "required": false,
+      "present": true,
+      "version": "4.6.2",
+      "path": "/opt/gitguard-tools/bin/pre-commit",
+      "error": ""
+    },
+    {
+      "name": "osv-scanner",
+      "display": "osv-scanner",
+      "purpose": "Dependency scan",
+      "wired": false,
+      "required": false,
+      "present": true,
+      "version": "2.6.0",
+      "path": "/opt/gitguard-tools/bin/osv-scanner",
+      "error": ""
+    },
+    {
+      "name": "zizmor",
+      "display": "zizmor",
+      "purpose": "Actions audit",
+      "wired": true,
+      "required": true,
+      "present": true,
+      "version": "1.30.1",
+      "path": "/opt/gitguard-tools/bin/zizmor",
+      "error": ""
+    }
+  ],
+  "events": {
+    "path": "/workspace/.gitguard/events.jsonl",
+    "blocked_total": 27
+  },
+  "problems": [
+    {
+      "severity": "error",
+      "code": "scanner_unavailable",
+      "message": "semgrep: not installed"
+    }
+  ]
+}

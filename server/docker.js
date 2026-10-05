@@ -590,6 +590,56 @@ export async function execInContainer(id, cmd) {
 }
 
 /**
+ * Execute a command and capture its result with hard limits — for reading
+ * output we do not trust (anything a container prints is controlled by the
+ * agent inside it). stdout is cut at maxBytes (truncated=true), stderr at 64 KiB,
+ * and the call rejects with code ETIMEDOUT after timeoutMs. Docker has no API to
+ * kill an exec'd process, so on timeout it keeps running in the container; we
+ * only stop waiting for it.
+ * @returns {Promise<{exitCode: number|null, stdout: Buffer, stderr: string, truncated: boolean}>}
+ */
+export async function execCapture(id, cmd, { timeoutMs = 30_000, maxBytes = 1_048_576 } = {}) {
+  const container = await resolveContainer(id);
+  const exec = await container.exec({ Cmd: cmd, AttachStdout: true, AttachStderr: true });
+  const stream = await exec.start({ Tty: false });
+  return new Promise((resolve, reject) => {
+    const out = [];
+    const err = [];
+    let outBytes = 0;
+    let errBytes = 0;
+    let truncated = false;
+    let settled = false;
+    const finish = (fn) => { if (settled) return false; settled = true; clearTimeout(timer); return fn(); };
+    const timer = setTimeout(() => finish(() => {
+      stream.destroy?.();
+      const e = new Error(`exec timed out after ${timeoutMs} ms`);
+      e.code = 'ETIMEDOUT';
+      reject(e);
+    }), timeoutMs);
+    docker.modem.demuxStream(stream, {
+      write: (chunk) => {
+        const room = maxBytes - outBytes;
+        if (chunk.length > room) {
+          truncated = true;
+          if (room > 0) { out.push(chunk.subarray(0, room)); outBytes += room; }
+        } else {
+          out.push(chunk);
+          outBytes += chunk.length;
+        }
+      },
+    }, {
+      write: (chunk) => { if (errBytes < 65_536) { err.push(chunk); errBytes += chunk.length; } },
+    });
+    stream.on('end', () => finish(async () => {
+      let exitCode = null;
+      try { exitCode = (await exec.inspect()).ExitCode; } catch { /* container gone */ }
+      resolve({ exitCode, stdout: Buffer.concat(out), stderr: Buffer.concat(err).toString('utf8'), truncated });
+    }));
+    stream.on('error', (e) => finish(() => reject(e)));
+  });
+}
+
+/**
  * Create a PTY exec session for terminal access.
  * Returns { stream, exec } for bidirectional piping.
  */

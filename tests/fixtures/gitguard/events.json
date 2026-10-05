@@ -1,0 +1,166 @@
+{
+  "schema": "gitguard.events/v1",
+  "generated_at": "2026-10-05T22:34:46.308Z",
+  "events_path": "/workspace/.gitguard/events.jsonl",
+  "total_matching": 27,
+  "returned": 5,
+  "skipped_lines": 0,
+  "events": [
+    {
+      "schema": "gitguard.event/v1",
+      "id": "b6a1398e-17a1-41cc-adc7-2c1f17676ed7",
+      "timestamp": "2026-10-05T22:27:11.246Z",
+      "type": "commit_blocked",
+      "reason": "findings",
+      "enforced": true,
+      "repo": "/tmp/tmp.anp8FNyUOO",
+      "repo_hash": "0b7e994675de3c7f",
+      "branch": "master",
+      "host": "gitguard-linux",
+      "user": "root",
+      "findings": [
+        {
+          "scanner": "gitleaks",
+          "rule_id": "github-pat",
+          "category": "CREDENTIALS",
+          "severity": "CRITICAL",
+          "file": "secret.env",
+          "line": 1,
+          "finding_id": "bc0e26ebfff6"
+        },
+        {
+          "scanner": "filetype-check",
+          "rule_id": "sensitive-file-env",
+          "category": "CREDENTIALS",
+          "severity": "CRITICAL",
+          "file": "secret.env",
+          "line": 0,
+          "finding_id": "c929a93dcec5"
+        }
+      ],
+      "scanner_failures": []
+    },
+    {
+      "schema": "gitguard.event/v1",
+      "id": "c82e4f05-b3b4-4763-98cb-2f091dc5459d",
+      "timestamp": "2026-10-05T22:27:16.11Z",
+      "type": "commit_blocked",
+      "reason": "findings",
+      "enforced": true,
+      "repo": "/tmp/tmp.anp8FNyUOO",
+      "repo_hash": "0b7e994675de3c7f",
+      "branch": "master",
+      "host": "gitguard-linux",
+      "user": "root",
+      "findings": [
+        {
+          "scanner": "gitleaks",
+          "rule_id": "github-pat",
+          "category": "CREDENTIALS",
+          "severity": "CRITICAL",
+          "file": "secret2.env",
+          "line": 1,
+          "finding_id": "1c38b15b60c0"
+        },
+        {
+          "scanner": "filetype-check",
+          "rule_id": "sensitive-file-env",
+          "category": "CREDENTIALS",
+          "severity": "CRITICAL",
+          "file": "secret2.env",
+          "line": 0,
+          "finding_id": "8ec36a0d3bb4"
+        }
+      ],
+      "scanner_failures": []
+    },
+    {
+      "schema": "gitguard.event/v1",
+      "id": "0a6457b4-c599-4fbb-8521-d9721556b6cd",
+      "timestamp": "2026-10-05T22:27:17.032Z",
+      "type": "commit_blocked",
+      "reason": "scanner_failure",
+      "enforced": true,
+      "repo": "/tmp/tmp.anp8FNyUOO",
+      "repo_hash": "0b7e994675de3c7f",
+      "branch": "master",
+      "host": "gitguard-linux",
+      "user": "root",
+      "findings": [],
+      "scanner_failures": [
+        {
+          "scanner": "trufflehog",
+          "reason": "not installed (no 'trufflehog' on the policy tool path)"
+        }
+      ]
+    },
+    {
+      "schema": "gitguard.event/v1",
+      "id": "6f8f5408-03c9-4888-88ea-7ca851ba4a2d",
+      "timestamp": "2026-10-05T22:27:21.894Z",
+      "type": "commit_blocked",
+      "reason": "findings",
+      "enforced": true,
+      "repo": "/tmp/tmp.sQs2o0Ft12",
+      "repo_hash": "7dd76aa140c271b4",
+      "branch": "master",
+      "host": "gitguard-linux",
+      "user": "claude",
+      "findings": [
+        {
+          "scanner": "gitleaks",
+          "rule_id": "github-pat",
+          "category": "CREDENTIALS",
+          "severity": "CRITICAL",
+          "file": "secret.env",
+          "line": 1,
+          "finding_id": "f43eb2546653"
+        },
+        {
+          "scanner": "filetype-check",
+          "rule_id": "sensitive-file-env",
+          "category": "CREDENTIALS",
+          "severity": "CRITICAL",
+          "file": "secret.env",
+          "line": 0,
+          "finding_id": "c929a93dcec5"
+        }
+      ],
+      "scanner_failures": []
+    },
+    {
+      "schema": "gitguard.event/v1",
+      "id": "0f0d7632-3fa6-46a3-a71d-e4e6274e9115",
+      "timestamp": "2026-10-05T22:27:26.531Z",
+      "type": "commit_blocked",
+      "reason": "findings",
+      "enforced": true,
+      "repo": "/tmp/tmp.sQs2o0Ft12",
+      "repo_hash": "7dd76aa140c271b4",
+      "branch": "master",
+      "host": "gitguard-linux",
+      "user": "claude",
+      "findings": [
+        {
+          "scanner": "gitleaks",
+          "rule_id": "github-pat",
+          "category": "CREDENTIALS",
+          "severity": "CRITICAL",
+          "file": "secret2.env",
+          "line": 1,
+          "finding_id": "e459487e3a7d"
+        },
+        {
+          "scanner": "filetype-check",
+          "rule_id": "sensitive-file-env",
+          "category": "CREDENTIALS",
+          "severity": "CRITICAL",
+          "file": "secret2.env",
+          "line": 0,
+          "finding_id": "8ec36a0d3bb4"
+        }
+      ],
+      "scanner_failures": []
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import StatusBadge from './StatusBadge.jsx';
 import GrantBadge from './GrantBadge.jsx';
+import GitGuardBadge from './GitGuardBadge.jsx';
 import { AccessRequestBadge } from './AccessRequests.jsx';
 import { formatTokens } from '../lib/notify.js';
 
@@ -12,7 +13,7 @@ function timeAgo(unixTimestamp) {
   return `${Math.floor(seconds / 86400)}d ago`;
 }
 
-export default function InstanceRow({ instance, managed = true, onStart, onStop, onTerminal, onRemove, onRecreate, onUpdateClaude, onAdopt, adopting, onPolicyClick, onGrantClick, onScanClick }) {
+export default function InstanceRow({ instance, managed = true, onStart, onStop, onTerminal, onRemove, onRecreate, onUpdateClaude, onAdopt, adopting, onPolicyClick, onGrantClick, onScanClick, onGitGuardClick }) {
   const [stopping, setStopping] = useState(false);
   const [removing, setRemoving] = useState(false);
   const [recreating, setRecreating] = useState(false);
@@ -106,6 +107,7 @@ export default function InstanceRow({ instance, managed = true, onStart, onStop,
                 onClick={() => onGrantClick?.(instance.id)}
               />
             ))}
+            <GitGuardBadge gitguard={instance.gitguard} onClick={() => onGitGuardClick?.(instance)} />
             {instance.usage?.contextTokens > 0 && (
               <span
                 className="text-[10px] rounded px-1 py-0.5 shrink-0 hidden md:inline-flex items-center gap-1 text-emerald-400 border border-emerald-900"

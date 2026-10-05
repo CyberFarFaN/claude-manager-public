@@ -52,6 +52,11 @@ Everything Claude Manager gives the operator, on one page.
 - The manager checks npm daily and rebuilds the workspace image (over the Docker API) whenever a newer Claude Code is published, so **new instances always launch on the latest** — plus a manual "Rebuild" button in the header
 - Running instances are left untouched; the header shows the current version and any update, and a per-instance **"Update Claude"** button recreates that instance onto the latest image **while retaining its workspace data**
 
+**GitGuard indicator** (for workspace images with [GitGuard](docs/gitguard-indicator.md) baked in)
+- Shield badge per instance: green = gate active and healthy, red = GitGuard missing or unhealthy (e.g. a scanner removed), grey = stopped/unknown; the number is how many commits it has blocked
+- Click for the panel: scanners + versions, hooksPath ownership, every blocked commit (time, repo, scanner, rule, file — never the secret), and a downloadable HTML report
+- The manager **pulls** with `docker exec gitguard … --json`; containers get no new endpoint, and their output is treated as hostile (see [docs/gitguard-indicator.md](docs/gitguard-indicator.md)). `GITGUARD_POLL_INTERVAL_SECONDS=0` turns it off
+
 **Capability grants**
 - Time-bound (default 24 h) grants for `docker_socket` and `network_unrestricted`
 - Expired grants auto-stop the container; UI offers renew or recreate-without
